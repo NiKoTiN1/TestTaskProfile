@@ -2,9 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using TestTaskProfile.Data.Models;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace TestTaskProfile.Data
 {
@@ -17,5 +19,6 @@ namespace TestTaskProfile.Data
 
         public DbSet<User> Users { get; set; }
         public DbSet<Card> Cards { get; set; }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
     }
 }

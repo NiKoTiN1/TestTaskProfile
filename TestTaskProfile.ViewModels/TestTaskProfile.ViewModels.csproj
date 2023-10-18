@@ -7,17 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Isopoh.Cryptography.Argon2" Version="2.0.0" />
-    <PackageReference Include="MediatR" Version="12.1.1" />
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\TestTaskProfile.Data\TestTaskProfile.Data.csproj" />
-    <ProjectReference Include="..\TestTaskProfile.ViewModels\TestTaskProfile.ViewModels.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Token\Queries\" />
   </ItemGroup>
 
 </Project>
