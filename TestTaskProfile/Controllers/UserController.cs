@@ -28,7 +28,7 @@ namespace TestTaskProfile.Web.Controllers
 
         // GET api/<UserController>/5
         [HttpGet("{id}")]
-        public async Task<GetUserModel> Get(Guid id)
+        public async Task<GetUserModel> GetById(Guid id)
         {
             return await _mediator.Send(new GetUserByIdQuery(id));
         }
@@ -43,13 +43,13 @@ namespace TestTaskProfile.Web.Controllers
 
         // PUT api/<UserController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public void Put(Guid id, [FromBody] string value)
         {
         }
 
         // DELETE api/<UserController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public void Delete(Guid id)
         {
         }
     }
