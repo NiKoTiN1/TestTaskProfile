@@ -18,7 +18,11 @@ namespace TestTaskProfile.Data.Models
         [MaxLength(100)]
         public string Email { get; set; }
         [Required]
+        [MaxLength(30)]
+        public string PhoneNumber { get; set; }
+        [Required]
         public string Password { get; set; }
+        public RefreshToken? RefreshToken { get; set; }
         public Card? Card { get; set; }
     }
 }
