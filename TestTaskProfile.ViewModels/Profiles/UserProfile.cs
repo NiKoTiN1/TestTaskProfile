@@ -13,7 +13,7 @@ namespace TestTaskProfile.ViewModels.Profiles
     {
         public UserProfile()
         {
-            CreateMap<CreateUserViewModel, User>()
+            CreateMap<CreateUserModel, User>()
                 .ForMember(x => x.Id, options => options.MapFrom(x => Guid.NewGuid()))
                 .ForMember(x => x.Name, options => options.MapFrom(x => x.Name))
                 .ForMember(x => x.PhoneNumber, options => options.MapFrom(x => x.PhoneNumber))

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TestTaskProfile.ViewModels.Models
 {
-    public class CreateUserViewModel
+    public class CreateUserModel
     {
         public string Name { get; set; }
         public string Email { get; set; }

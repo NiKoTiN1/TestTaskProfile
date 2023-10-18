@@ -3,5 +3,5 @@ using TestTaskProfile.ViewModels.Models;
 
 namespace TestTaskProfile.CQRS.Users.Commands.CreateUser
 {
-    public record CreateUserCommand(CreateUserViewModel CreateUserViewModel) : IRequest<TokenViewModel>;
+    public record CreateUserCommand(CreateUserModel CreateUserViewModel) : IRequest<TokenModel>;
 }

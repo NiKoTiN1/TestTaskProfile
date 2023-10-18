@@ -1,6 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using TestTaskProfile.CQRS.Users.Commands.CreateUser;
+using TestTaskProfile.CQRS.Users.Commands.DeleteUser;
+using TestTaskProfile.CQRS.Users.Commands.UpdateUser;
 using TestTaskProfile.CQRS.Users.Queries.GetAllUsers;
 using TestTaskProfile.CQRS.Users.Queries.GetUserById;
 using TestTaskProfile.ViewModels.Models;
@@ -35,7 +37,7 @@ namespace TestTaskProfile.Web.Controllers
 
         // POST api/<CreateUser>
         [HttpPost]
-        public async Task<TokenViewModel> CreateUser([FromBody] CreateUserViewModel model)
+        public async Task<TokenModel> CreateUser([FromBody] CreateUserModel model)
         {
             var command = new CreateUserCommand(model);
             return await _mediator.Send(command);
@@ -43,14 +45,19 @@ namespace TestTaskProfile.Web.Controllers
 
         // PUT api/<UserController>/5
         [HttpPut("{id}")]
-        public void Put(Guid id, [FromBody] string value)
+        public async Task<GetUserModel> Put(Guid id, [FromBody] UpdateUserModel model)
         {
+            model.Id = id;
+            var updateUserCommandModel = new UpdateUserCommand(model);
+            return await _mediator.Send(updateUserCommandModel);
         }
 
         // DELETE api/<UserController>/5
         [HttpDelete("{id}")]
-        public void Delete(Guid id)
+        public async Task Delete(Guid id)
         {
+            var deleteUserCommandModel = new DeleteUserCommand(id);
+            await _mediator.Send(deleteUserCommandModel);
         }
     }
 }

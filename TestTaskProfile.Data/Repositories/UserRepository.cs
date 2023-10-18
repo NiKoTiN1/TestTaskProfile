@@ -34,5 +34,33 @@ namespace TestTaskProfile.Data.Repositories
 
             return user;
         }
+
+        public async Task<User> UpdateUser(User user)
+        {
+            var dbUser = await _databaseContext.Users.FirstOrDefaultAsync(usr => usr.Id == user.Id);
+
+            if (dbUser == null)
+            {
+                return null;
+            }
+
+            _databaseContext.Users.Update(user);
+            await _databaseContext.SaveChangesAsync();
+
+            return user;
+        }
+
+        public async Task DeleteUser(Guid Id)
+        {
+            var dbUser = await _databaseContext.Users.FirstOrDefaultAsync(usr => usr.Id == Id);
+
+            if (dbUser == null)
+            {
+                return;
+            }
+
+            _databaseContext.Users.Remove(dbUser);
+            await _databaseContext.SaveChangesAsync();
+        }
     }
 }
