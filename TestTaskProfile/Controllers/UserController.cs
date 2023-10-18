@@ -1,6 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using TestTaskProfile.CQRS.Users.Commands.CreateUser;
+using TestTaskProfile.CQRS.Users.Queries.GetAllUsers;
+using TestTaskProfile.CQRS.Users.Queries.GetUserById;
 using TestTaskProfile.ViewModels.Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -19,16 +21,16 @@ namespace TestTaskProfile.Web.Controllers
         }
         // GET: api/<UserController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<IEnumerable<GetUserModel>> Get()
         {
-            return new string[] { "value1", "value2" };
+            return await _mediator.Send(new GetAllUsersQuery());
         }
 
         // GET api/<UserController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<GetUserModel> Get(Guid id)
         {
-            return "value";
+            return await _mediator.Send(new GetUserByIdQuery(id));
         }
 
         // POST api/<CreateUser>

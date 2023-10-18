@@ -1,11 +1,6 @@
 ﻿using AutoMapper;
 using Isopoh.Cryptography.Argon2;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TestTaskProfile.CQRS.Token.Commands.GenerateAccessToken;
 using TestTaskProfile.CQRS.Token.Commands.GenerateRefreshToken;
 using TestTaskProfile.Data.Interfaces;

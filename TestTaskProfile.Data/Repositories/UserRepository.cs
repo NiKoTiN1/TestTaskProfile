@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,6 +16,17 @@ namespace TestTaskProfile.Data.Repositories
         {
             _databaseContext = context;
         }
+
+        public async Task<IEnumerable<User>> GetAllUsers()
+        {
+            return await _databaseContext.Users.ToListAsync();
+        }
+
+        public async Task<User> GetUserById(Guid Id)
+        {
+            return await _databaseContext.Users.FirstOrDefaultAsync(usr => usr.Id == Id);
+        }
+
         public async Task<User> CreateUser(User user)
         {
             await _databaseContext.Users.AddAsync(user);

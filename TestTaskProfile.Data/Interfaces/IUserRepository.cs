@@ -9,6 +9,8 @@ namespace TestTaskProfile.Data.Interfaces
 {
     public interface IUserRepository
     {
+        Task<IEnumerable<User>> GetAllUsers();
+        Task<User> GetUserById(Guid Id);
         Task<User> CreateUser(User user);
     }
 }
