@@ -32,9 +32,10 @@ namespace TestTaskProfile.Web.Controllers
 
         // GET api/<UserController>/5
         [HttpGet("{id}")]
-        public async Task<GetUserModel> GetById(Guid id)
+        public async Task<IActionResult> GetById(Guid id)
         {
-            return await _mediator.Send(new GetUserByIdQuery(id));
+            var user = await _mediator.Send(new GetUserByIdQuery(id));
+            return Ok(user);
         }
 
         [HttpPost]
