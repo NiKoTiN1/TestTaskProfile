@@ -9,7 +9,7 @@ using TestTaskProfile.Data.Models;
 
 namespace TestTaskProfile.Data.Repositories
 {
-    public class UserRepository: IUserRepository
+    public class UserRepository : IUserRepository
     {
         private readonly DatabaseContext _databaseContext;
         public UserRepository(DatabaseContext context)
@@ -25,6 +25,11 @@ namespace TestTaskProfile.Data.Repositories
         public async Task<User> GetUserById(Guid Id)
         {
             return await _databaseContext.Users.FirstOrDefaultAsync(usr => usr.Id == Id);
+        }
+
+        public async Task<User> GetUserByEmail(string email)
+        {
+            return await _databaseContext.Users.FirstOrDefaultAsync(usr => usr.Email == email);
         }
 
         public async Task<User> CreateUser(User user)
