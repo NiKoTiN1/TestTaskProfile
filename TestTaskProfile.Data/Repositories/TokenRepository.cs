@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,6 +15,11 @@ namespace TestTaskProfile.Data.Repositories
         public TokenRepository(DatabaseContext databaseContext)
         {
             _databaseContext = databaseContext;
+        }
+
+        public async Task<RefreshToken> GetRefreshTokenById(Guid id)
+        {
+            return await _databaseContext.RefreshTokens.FirstOrDefaultAsync(token => token.Id == id);
         }
 
         public async Task SaveRefreshToken(RefreshToken refreshToken)

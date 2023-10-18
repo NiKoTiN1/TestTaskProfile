@@ -9,6 +9,7 @@ namespace TestTaskProfile.Data.Interfaces
 {
     public interface ITokenRepository
     {
+        Task<RefreshToken> GetRefreshTokenById(Guid id);
         Task SaveRefreshToken(RefreshToken refreshToken);
     }
 }
