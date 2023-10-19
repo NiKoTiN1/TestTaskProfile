@@ -22,6 +22,11 @@ namespace TestTaskProfile.Web.Controllers
         [Route("refresh")]
         public async Task<IActionResult> RefreshToken([FromBody] TokenModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var updateAccessTokenQueryModel = new UpdateAccessTokenQuery(model);
             var tokenModel = await _mediator.Send(updateAccessTokenQueryModel);
 

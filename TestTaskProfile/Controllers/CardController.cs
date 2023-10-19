@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using TestTaskProfile.CQRS.Cards.Commands.AddCard;
 using TestTaskProfile.CQRS.Cards.Commands.DeleteCard;
 using TestTaskProfile.CQRS.Cards.Commands.UpdateCard;
@@ -52,6 +53,11 @@ namespace TestTaskProfile.Web.Controllers
                 return Unauthorized();
             }
 
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var addCardCommandModel = new AddCardCommand(model, Guid.Parse(userIdClaim.Value));
             var card = await _mediator.Send(addCardCommandModel);
 
@@ -61,8 +67,14 @@ namespace TestTaskProfile.Web.Controllers
         [HttpPut("update/{id}")]
         public async Task<IActionResult> UpdateCard(Guid id, [FromBody] UpdateCardModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var updateCardCommandModel = new UpdateCardCommand(model, id);
             var newCard = await _mediator.Send(updateCardCommandModel);
+
             return Ok(newCard);
         }
 
@@ -74,6 +86,11 @@ namespace TestTaskProfile.Web.Controllers
             if (string.IsNullOrEmpty(userIdClaim.Value))
             {
                 return Unauthorized();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
             }
 
             var model = new DeleteCardModel()

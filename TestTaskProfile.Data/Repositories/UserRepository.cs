@@ -15,7 +15,7 @@ namespace TestTaskProfile.Data.Repositories
 
         public async Task<IEnumerable<User>> GetAllUsers()
         {
-            return await _databaseContext.Users.ToListAsync();
+            return await _databaseContext.Users.Include(user => user.Card).ToListAsync();
         }
 
         public async Task<User> GetUserById(Guid Id)
