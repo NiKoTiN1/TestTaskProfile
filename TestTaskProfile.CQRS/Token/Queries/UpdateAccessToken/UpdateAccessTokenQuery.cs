@@ -3,5 +3,5 @@ using TestTaskProfile.ViewModels.Models;
 
 namespace TestTaskProfile.CQRS.Token.Queries.UpdateAccessToken
 {
-    public record UpdateAccessTokenQuery(TokenModel tokenModel) : IRequest<TokenModel>;
+    public record UpdateAccessTokenQuery(TokenModel TokenModel) : IRequest<TokenModel>;
 }

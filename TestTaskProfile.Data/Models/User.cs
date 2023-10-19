@@ -30,6 +30,6 @@ namespace TestTaskProfile.Data.Models
 
         [ForeignKey("CardId")]
         public Card? Card { get; set; }
-        public Guid CardId { get; set; }
+        public Guid? CardId { get; set; }
     }
 }

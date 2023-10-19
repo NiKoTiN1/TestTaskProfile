@@ -15,6 +15,7 @@ namespace TestTaskProfile.ViewModels.Models
 
         [Required]
         [MaxLength(30)]
+        [DataType(DataType.PhoneNumber)]
         public string PhoneNumber { get; set; }
 
         [Required]

@@ -2,5 +2,5 @@
 
 namespace TestTaskProfile.CQRS.Token.Queries.GetUserIdFromToken
 {
-    public record GetUserIdFromTokenQuery(string accessToken) : IRequest<Guid>;
+    public record GetUserIdFromTokenQuery(string AccessToken) : IRequest<Guid>;
 }

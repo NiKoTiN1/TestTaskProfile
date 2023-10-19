@@ -30,7 +30,7 @@ namespace TestTaskProfile.CQRS.Token.Queries.GetUserIdFromToken
 
             var tokenHandler = new JwtSecurityTokenHandler();
             SecurityToken securityToken;
-            var principal = tokenHandler.ValidateToken(request.accessToken, tokenValidationParamters, out securityToken);
+            var principal = tokenHandler.ValidateToken(request.AccessToken, tokenValidationParamters, out securityToken);
             var jwtSecurityToken = securityToken as JwtSecurityToken;
 
             if (jwtSecurityToken == null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))

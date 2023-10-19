@@ -20,7 +20,7 @@ namespace TestTaskProfile.CQRS.Users.Queries.GetUserByEmail
 
         public async Task<User> Handle(GetUserByEmailQuery request, CancellationToken cancellationToken)
         {
-            return await _userRepository.GetUserByEmail(request.email);
+            return await _userRepository.GetUserByEmail(request.Email);
         }
     }
 }

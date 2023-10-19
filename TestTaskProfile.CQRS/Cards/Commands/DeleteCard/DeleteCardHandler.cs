@@ -48,7 +48,7 @@ namespace TestTaskProfile.CQRS.Cards.Commands.DeleteCard
                 throw new HttpResponseException(System.Net.HttpStatusCode.NotFound);
             }
 
-            var updateUserCardCommandModel = new UpdateUserCardCommand(user, Guid.Empty);
+            var updateUserCardCommandModel = new UpdateUserCardCommand(user, null);
             await _mediator.Send(updateUserCardCommandModel);
         }
     }
