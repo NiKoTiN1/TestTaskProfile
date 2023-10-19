@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using TestTaskProfile.CQRS.Users.Commands.CreateUser;
 using TestTaskProfile.CQRS.Users.Commands.DeleteUser;
 using TestTaskProfile.CQRS.Users.Commands.UpdateUser;
@@ -28,9 +29,11 @@ namespace TestTaskProfile.Web.Controllers
         [AllowAnonymous]
         [HttpGet]
         [Route("getall")]
-        public async Task<IEnumerable<GetUserModel>> GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            return await _mediator.Send(new GetAllUsersQuery());
+            var users = await _mediator.Send(new GetAllUsersQuery());
+
+            return Ok(users);
         }
 
         [AllowAnonymous]
@@ -38,25 +41,40 @@ namespace TestTaskProfile.Web.Controllers
         public async Task<IActionResult> GetById(Guid id)
         {
             var user = await _mediator.Send(new GetUserByIdQuery(id));
+
             return Ok(user);
         }
 
         [AllowAnonymous]
         [HttpPost]
         [Route("login")]
-        public async Task<TokenModel> Login([FromBody] LoginModel model)
+        public async Task<IActionResult> Login([FromBody] LoginModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var command = new LoginQuery(model);
-            return await _mediator.Send(command);
+            var tokens = await _mediator.Send(command);
+
+            return Ok(tokens);
         }
 
         [AllowAnonymous]
         [HttpPost]
         [Route("create")]
-        public async Task<TokenModel> CreateUser([FromBody] CreateUserModel model)
+        public async Task<IActionResult> CreateUser([FromBody] CreateUserModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var command = new CreateUserCommand(model);
-            return await _mediator.Send(command);
+            var tokens = await _mediator.Send(command);
+
+            return Ok(tokens);
         }
 
         [HttpPut("update/{id}")]
@@ -74,8 +92,14 @@ namespace TestTaskProfile.Web.Controllers
                 return Forbid();
             }
 
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             model.Id = id;
             var updateUserCommandModel = new UpdateUserCommand(model);
+
             return Ok(await _mediator.Send(updateUserCommandModel));
         }
 
@@ -92,6 +116,11 @@ namespace TestTaskProfile.Web.Controllers
             if (userIdClaim.Value != id.ToString())
             {
                 return Forbid();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
             }
 
             var deleteUserCommandModel = new DeleteUserCommand(id);
