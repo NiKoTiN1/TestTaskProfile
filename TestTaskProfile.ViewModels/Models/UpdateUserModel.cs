@@ -14,6 +14,7 @@ namespace TestTaskProfile.ViewModels.Models
         public string Email { get; set; }
 
         [MaxLength(30)]
+        [DataType(DataType.PhoneNumber)]
         public string PhoneNumber { get; set; }
 
         [DataType(DataType.Password)]

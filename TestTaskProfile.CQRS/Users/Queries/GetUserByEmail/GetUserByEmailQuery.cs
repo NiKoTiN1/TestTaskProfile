@@ -3,5 +3,5 @@ using TestTaskProfile.Data.Models;
 
 namespace TestTaskProfile.CQRS.Users.Queries.GetUserByEmail
 {
-    public record GetUserByEmailQuery(string email) : IRequest<User>;
+    public record GetUserByEmailQuery(string Email) : IRequest<User>;
 }

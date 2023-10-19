@@ -20,7 +20,7 @@ namespace TestTaskProfile.CQRS.Token.Queries.UpdateAccessToken
 
         public async Task<TokenModel> Handle(UpdateAccessTokenQuery request, CancellationToken cancellationToken)
         {
-            var model = request.tokenModel;
+            var model = request.TokenModel;
 
             if (model.RefreshToken == null || string.IsNullOrEmpty(model.RefreshToken))
             {
