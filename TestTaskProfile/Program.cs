@@ -50,8 +50,10 @@ builder.Services.AddDbContext<DatabaseContext>(options =>
 
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<ITokenRepository, TokenRepository>();
+builder.Services.AddTransient<ICardRepository, CardRepository>();
 
 builder.Services.AddAutoMapper(typeof(UserProfile));
+builder.Services.AddAutoMapper(typeof(CardProfile));
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(MediatREntrypoint).Assembly));
 
 builder.Services.AddAuthentication(options =>

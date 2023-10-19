@@ -49,6 +49,7 @@ namespace TestTaskProfile.CQRS.Users.Commands.CreateUser
                 AccessToken = accessToken,
                 RefreshToken = refreshToken.Token.ToString(),
             };
+
             return tokenModel;
         }
     }
