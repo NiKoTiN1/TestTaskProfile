@@ -15,15 +15,12 @@ namespace TestTaskProfile.CQRS.Users.Commands.UpdateUser
     {
         private readonly IMapper _mapper;
         private readonly IUserRepository _userRepository;
-        private readonly IMediator _mediator;
 
         public UpdateUserHandler(IMapper mapper,
-            IUserRepository userRepository,
-            IMediator mediator)
+            IUserRepository userRepository)
         {
             _mapper = mapper;
             _userRepository = userRepository;
-            _mediator = mediator;
         }
 
         public async Task<GetUserModel> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
