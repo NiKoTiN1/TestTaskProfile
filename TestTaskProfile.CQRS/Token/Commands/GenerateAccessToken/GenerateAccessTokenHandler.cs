@@ -1,26 +1,22 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
-using System.Data;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
-using TestTaskProfile.Data.Models;
+using System.Web.Http;
 
 namespace TestTaskProfile.CQRS.Token.Commands.GenerateAccessToken
 {
     public class GenerateAccessTokenHandler : IRequestHandler<GenerateAccessTokenCommand, string>
     {
         private readonly IConfiguration _configuration;
+
         public GenerateAccessTokenHandler(IConfiguration configuration)
         {
             _configuration = configuration;
         }
+
         public async Task<string> Handle(GenerateAccessTokenCommand request, CancellationToken cancellationToken)
         {
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -34,19 +30,18 @@ namespace TestTaskProfile.CQRS.Token.Commands.GenerateAccessToken
                 Audience = _configuration["Authentication:AUDIENCE"],
                 Issuer = _configuration["Authentication:ISSUER"],
             };
+
             var tokenHandler = new JwtSecurityTokenHandler();
+
             try
             {
-
                 var token = tokenHandler.CreateToken(tokenDescriptor);
                 return await Task.FromResult(tokenHandler.WriteToken(token));
             }
-            catch (Exception ex)
+            catch
             {
-                Console.WriteLine(ex.Message);
+                throw new HttpResponseException(System.Net.HttpStatusCode.BadRequest);
             }
-
-            return await Task.FromResult("");
         }
     }
 }

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Http;
 using TestTaskProfile.Data.Interfaces;
 using TestTaskProfile.Data.Repositories;
 using TestTaskProfile.ViewModels.Models;
@@ -30,7 +31,7 @@ namespace TestTaskProfile.CQRS.Cards.Commands.UpdateCard
 
             if (card == null)
             {
-                return null;
+                throw new HttpResponseException(System.Net.HttpStatusCode.NotFound);
             }
 
             if (!string.IsNullOrEmpty(updateModel.Number))
@@ -57,7 +58,7 @@ namespace TestTaskProfile.CQRS.Cards.Commands.UpdateCard
 
             if (newCard == null)
             {
-                return null;
+                throw new HttpResponseException(System.Net.HttpStatusCode.BadRequest);
             }
 
             return _mapper.Map<GetCardModel>(newCard);

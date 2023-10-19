@@ -1,9 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TestTaskProfile.Data.Interfaces;
 using TestTaskProfile.Data.Models;
 
@@ -22,10 +17,11 @@ namespace TestTaskProfile.Data.Repositories
             return await _databaseContext.RefreshTokens.FirstOrDefaultAsync(token => token.Id == id);
         }
 
-        public async Task SaveRefreshToken(RefreshToken refreshToken)
+        public async Task<RefreshToken> SaveRefreshToken(RefreshToken refreshToken)
         {
             await _databaseContext.RefreshTokens.AddAsync(refreshToken);
             await _databaseContext.SaveChangesAsync();
+            return refreshToken;
         }
     }
 }

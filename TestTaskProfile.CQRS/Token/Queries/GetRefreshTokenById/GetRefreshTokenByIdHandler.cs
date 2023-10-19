@@ -1,9 +1,5 @@
 ﻿using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Web.Http;
 using TestTaskProfile.Data.Interfaces;
 using TestTaskProfile.Data.Models;
 
@@ -20,7 +16,15 @@ namespace TestTaskProfile.CQRS.Token.Queries.GetRefreshTokenById
 
         public async Task<RefreshToken> Handle(GetRefreshTokenByIdQuery request, CancellationToken cancellationToken)
         {
-            return await _tokenRepository.GetRefreshTokenById(request.Id);
+            var token = await _tokenRepository.GetRefreshTokenById(request.Id);
+
+            if (token == null)
+            {
+                throw new HttpResponseException(System.Net.HttpStatusCode.NotFound);
+
+            }
+
+            return token;
         }
     }
 }

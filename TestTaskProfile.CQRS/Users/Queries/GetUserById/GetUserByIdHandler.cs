@@ -2,7 +2,6 @@
 using MediatR;
 using TestTaskProfile.Data.Interfaces;
 using TestTaskProfile.Data.Models;
-using TestTaskProfile.ViewModels.Models;
 
 namespace TestTaskProfile.CQRS.Users.Queries.GetUserById
 {

@@ -1,11 +1,7 @@
 ﻿using AutoMapper;
 using Isopoh.Cryptography.Argon2;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Web.Http;
 using TestTaskProfile.Data.Interfaces;
 using TestTaskProfile.ViewModels.Models;
 
@@ -30,7 +26,7 @@ namespace TestTaskProfile.CQRS.Users.Commands.UpdateUser
 
             if (user == null)
             {
-                return null;
+                throw new HttpResponseException(System.Net.HttpStatusCode.NotFound);
             }
 
             if (!string.IsNullOrEmpty(updateModel.Name))
@@ -58,7 +54,7 @@ namespace TestTaskProfile.CQRS.Users.Commands.UpdateUser
 
             if (newUser == null)
             {
-                return null;
+                throw new HttpResponseException(System.Net.HttpStatusCode.BadRequest);
             }
 
             return _mapper.Map<GetUserModel>(newUser);

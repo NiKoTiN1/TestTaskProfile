@@ -24,6 +24,7 @@ namespace TestTaskProfile.Web.Controllers
 
         [AllowAnonymous]
         [Route("getall")]
+        [HttpGet]
         public async Task<IActionResult> GetAll()
         {
             var cards = await _mediator.Send(new GetAllCardsQuery());
@@ -57,8 +58,7 @@ namespace TestTaskProfile.Web.Controllers
             return Ok(card);
         }
 
-        [HttpPut("{id}")]
-        [Route("update")]
+        [HttpPut("update/{id}")]
         public async Task<IActionResult> UpdateCard(Guid id, [FromBody] UpdateCardModel model)
         {
             var updateCardCommandModel = new UpdateCardCommand(model, id);

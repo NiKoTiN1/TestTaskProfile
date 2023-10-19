@@ -1,13 +1,8 @@
-﻿using Azure.Core;
-using MediatR;
+﻿using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace TestTaskProfile.CQRS.Token.Queries.GetUserIdFromToken
 {
@@ -37,6 +32,7 @@ namespace TestTaskProfile.CQRS.Token.Queries.GetUserIdFromToken
             SecurityToken securityToken;
             var principal = tokenHandler.ValidateToken(request.accessToken, tokenValidationParamters, out securityToken);
             var jwtSecurityToken = securityToken as JwtSecurityToken;
+
             if (jwtSecurityToken == null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
             {
                 throw new SecurityTokenException("Invalid token!");

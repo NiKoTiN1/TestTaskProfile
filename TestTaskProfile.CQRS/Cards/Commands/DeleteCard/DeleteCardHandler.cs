@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Http;
 using TestTaskProfile.CQRS.Cards.Queries.GetCardById;
 using TestTaskProfile.CQRS.Users.Commands.UpdateUserCard;
 using TestTaskProfile.CQRS.Users.Queries.GetUserById;
@@ -29,12 +30,12 @@ namespace TestTaskProfile.CQRS.Cards.Commands.DeleteCard
 
             if (card == null)
             {
-                return;
+                throw new HttpResponseException(System.Net.HttpStatusCode.NotFound);
             }
 
-            if(card.UserId !=  request.DeleteCardModel.UserId)
+            if (card.UserId !=  request.DeleteCardModel.UserId)
             {
-                return;
+                throw new HttpResponseException(System.Net.HttpStatusCode.Forbidden);
             }
 
             await _cardRepository.DeleteCard(request.DeleteCardModel.CardId);
@@ -44,7 +45,7 @@ namespace TestTaskProfile.CQRS.Cards.Commands.DeleteCard
             
             if (user == null)
             {
-                return;
+                throw new HttpResponseException(System.Net.HttpStatusCode.NotFound);
             }
 
             var updateUserCardCommandModel = new UpdateUserCardCommand(user, Guid.Empty);

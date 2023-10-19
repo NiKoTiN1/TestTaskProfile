@@ -1,9 +1,5 @@
 ﻿using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Web.Http;
 using TestTaskProfile.CQRS.Token.Commands.GenerateAccessToken;
 using TestTaskProfile.CQRS.Token.Queries.GetRefreshTokenById;
 using TestTaskProfile.CQRS.Token.Queries.GetUserIdFromToken;
@@ -25,13 +21,15 @@ namespace TestTaskProfile.CQRS.Token.Queries.UpdateAccessToken
         public async Task<TokenModel> Handle(UpdateAccessTokenQuery request, CancellationToken cancellationToken)
         {
             var model = request.tokenModel;
+
             if (model.RefreshToken == null || string.IsNullOrEmpty(model.RefreshToken))
             {
-                return null;
+                throw new HttpResponseException(System.Net.HttpStatusCode.BadRequest);
             }
+
             if (model.AccessToken == null || string.IsNullOrEmpty(model.AccessToken))
             {
-                return null;
+                throw new HttpResponseException(System.Net.HttpStatusCode.BadRequest);
             }
 
             var getUserIdFromTokenQuery = new GetUserIdFromTokenQuery(model.AccessToken);
@@ -40,6 +38,11 @@ namespace TestTaskProfile.CQRS.Token.Queries.UpdateAccessToken
             var getUserByIdQuery = new GetUserByIdQuery(userId);
             var user = await _mediator.Send(getUserByIdQuery);
 
+            if (user == null)
+            {
+                throw new HttpResponseException(System.Net.HttpStatusCode.NotFound);
+            }
+
             var getRefreshTokenByIdQuery = new GetRefreshTokenByIdQuery(user.RefreshTokenId);
             var refreshToken = await _mediator.Send(getRefreshTokenByIdQuery);
 
@@ -47,7 +50,7 @@ namespace TestTaskProfile.CQRS.Token.Queries.UpdateAccessToken
 
             if (!isRefreshTokenValid)
             {
-                return null;
+                throw new HttpResponseException(System.Net.HttpStatusCode.Unauthorized);
             }
 
             var generateAccessTokenModel = new GenerateAccessTokenCommand(user);
@@ -55,7 +58,7 @@ namespace TestTaskProfile.CQRS.Token.Queries.UpdateAccessToken
 
             if (newAccessToken == null)
             {
-                return null;
+                throw new HttpResponseException(System.Net.HttpStatusCode.BadRequest);
             }
 
             model.AccessToken = newAccessToken;

@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Http;
+using TestTaskProfile.CQRS.Cards.Commands.DeleteCard;
 using TestTaskProfile.CQRS.Users.Commands.UpdateUserCard;
 using TestTaskProfile.CQRS.Users.Queries.GetUserById;
 using TestTaskProfile.Data.Interfaces;
@@ -34,7 +36,7 @@ namespace TestTaskProfile.CQRS.Cards.Commands.AddCard
 
             if (user == null)
             {
-                return null;
+                throw new HttpResponseException(System.Net.HttpStatusCode.NotFound);
             }
 
             var card = _mapper.Map<Card>(request.AddCardModel);
@@ -45,7 +47,13 @@ namespace TestTaskProfile.CQRS.Cards.Commands.AddCard
             var createdCard = await _cardRepository.AddCard(card);
 
             var updateUserCardCommandModel = new UpdateUserCardCommand(user, card.Id);
-            await _mediator.Send(updateUserCardCommandModel);
+            var updatedUser = await _mediator.Send(updateUserCardCommandModel);
+
+            if (updatedUser == null)
+            {
+                await _cardRepository.DeleteCard(card.Id);
+                throw new HttpResponseException(System.Net.HttpStatusCode.BadRequest);
+            }
 
             var cardModel = _mapper.Map<GetCardModel>(createdCard);
 

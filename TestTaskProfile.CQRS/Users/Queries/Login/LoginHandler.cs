@@ -1,14 +1,9 @@
 ﻿using Isopoh.Cryptography.Argon2;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Web.Http;
 using TestTaskProfile.CQRS.Token.Commands.GenerateAccessToken;
 using TestTaskProfile.CQRS.Token.Queries.GetRefreshTokenById;
 using TestTaskProfile.CQRS.Users.Queries.GetUserByEmail;
-using TestTaskProfile.CQRS.Users.Queries.GetUserById;
 using TestTaskProfile.ViewModels.Models;
 
 namespace TestTaskProfile.CQRS.Users.Queries.Login
@@ -28,14 +23,14 @@ namespace TestTaskProfile.CQRS.Users.Queries.Login
 
             if (user == null)
             {
-                return null;
+                throw new HttpResponseException(System.Net.HttpStatusCode.NotFound);
             }
 
             var hashedPassword = Argon2.Hash(request.LoginModel.Password);
 
             if(Argon2.Verify(user.Password, hashedPassword))
             {
-                return null;
+                throw new HttpResponseException(System.Net.HttpStatusCode.BadRequest);
             }
 
             var getRefreshTokenByIdQuery = new GetRefreshTokenByIdQuery(user.RefreshTokenId);
@@ -43,7 +38,7 @@ namespace TestTaskProfile.CQRS.Users.Queries.Login
 
             if(refreshToken == null)
             {
-                return null;
+                throw new HttpResponseException(System.Net.HttpStatusCode.NotFound);
             }
 
             var generateAccessTokenCommandModel = new GenerateAccessTokenCommand(user);
