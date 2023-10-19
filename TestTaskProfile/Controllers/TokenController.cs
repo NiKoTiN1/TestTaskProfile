@@ -1,10 +1,12 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using TestTaskProfile.CQRS.Token.Queries.UpdateAccessToken;
 using TestTaskProfile.ViewModels.Models;
 
 namespace TestTaskProfile.Web.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class TokenController : ControllerBase
