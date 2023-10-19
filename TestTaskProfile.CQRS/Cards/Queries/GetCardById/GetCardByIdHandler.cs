@@ -1,9 +1,5 @@
 ﻿using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Web.Http;
 using TestTaskProfile.Data.Interfaces;
 using TestTaskProfile.Data.Models;
 
@@ -20,7 +16,14 @@ namespace TestTaskProfile.CQRS.Cards.Queries.GetCardById
 
         public async Task<Card> Handle(GetCardByIdQuery request, CancellationToken cancellationToken)
         {
-            return await _cardRepository.GetCardById(request.Id);
+            var card = await _cardRepository.GetCardById(request.Id);
+
+            if(card == null)
+            {
+                throw new HttpResponseException(System.Net.HttpStatusCode.NotFound);
+            }
+
+            return card;
         }
     }
 }

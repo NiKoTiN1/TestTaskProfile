@@ -13,6 +13,7 @@ using TestTaskProfile.ViewModels.Models;
 
 namespace TestTaskProfile.Web.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class AccountController : ControllerBase
@@ -23,14 +24,16 @@ namespace TestTaskProfile.Web.Controllers
         {
             _mediator = mediator;
         }
-        // GET: api/<UserController>
+
+        [AllowAnonymous]
         [HttpGet]
-        public async Task<IEnumerable<GetUserModel>> Get()
+        [Route("getall")]
+        public async Task<IEnumerable<GetUserModel>> GetAll()
         {
             return await _mediator.Send(new GetAllUsersQuery());
         }
 
-        // GET api/<UserController>/5
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
@@ -38,6 +41,7 @@ namespace TestTaskProfile.Web.Controllers
             return Ok(user);
         }
 
+        [AllowAnonymous]
         [HttpPost]
         [Route("login")]
         public async Task<TokenModel> Login([FromBody] LoginModel model)
@@ -46,18 +50,17 @@ namespace TestTaskProfile.Web.Controllers
             return await _mediator.Send(command);
         }
 
-        // POST api/<CreateUser>
+        [AllowAnonymous]
         [HttpPost]
+        [Route("create")]
         public async Task<TokenModel> CreateUser([FromBody] CreateUserModel model)
         {
             var command = new CreateUserCommand(model);
             return await _mediator.Send(command);
         }
 
-        // PUT api/<UserController>/5
-        [Authorize]
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Put(Guid id, [FromBody] UpdateUserModel model)
+        [HttpPut("update/{id}")]
+        public async Task<IActionResult> UpdateUser(Guid id, [FromBody] UpdateUserModel model)
         {
             var userIdClaim = HttpContext.User.Claims.FirstOrDefault(a => a.Type == "UserId");
 
@@ -76,8 +79,6 @@ namespace TestTaskProfile.Web.Controllers
             return Ok(await _mediator.Send(updateUserCommandModel));
         }
 
-        // DELETE api/<UserController>/5
-        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {

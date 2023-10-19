@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using Isopoh.Cryptography.Argon2;
 using MediatR;
+using System.Web.Http;
 using TestTaskProfile.CQRS.Token.Commands.GenerateAccessToken;
 using TestTaskProfile.CQRS.Token.Commands.GenerateRefreshToken;
 using TestTaskProfile.CQRS.Token.Commands.SaveRefreshToken;
+using TestTaskProfile.CQRS.Users.Commands.DeleteUser;
 using TestTaskProfile.Data.Interfaces;
 using TestTaskProfile.Data.Models;
 using TestTaskProfile.ViewModels.Models;
@@ -39,10 +41,25 @@ namespace TestTaskProfile.CQRS.Users.Commands.CreateUser
             refreshToken.UserId = model.Id;
             model.RefreshTokenId = refreshToken.Id;
 
-            var result = await _userRepository.CreateUser(model);
+            try
+            {
+                await _userRepository.CreateUser(model);
+            }
+            catch
+            {
+                throw new HttpResponseException(System.Net.HttpStatusCode.BadRequest);
+            }
 
             var saveRefreshTokenCommandModel = new SaveRefreshTokenCommand(refreshToken);
-            await _mediator.Send(saveRefreshTokenCommandModel);
+            var token = await _mediator.Send(saveRefreshTokenCommandModel);
+
+            if(token == null)
+            {
+                var deleteUserCommandModel = new DeleteUserCommand(model.Id);
+                await _mediator.Send(deleteUserCommandModel);
+
+                throw new HttpResponseException(System.Net.HttpStatusCode.BadRequest);
+            }
 
             var tokenModel = new TokenModel()
             {

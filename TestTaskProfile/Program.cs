@@ -1,9 +1,7 @@
 using TestTaskProfile.Data;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection;
 using TestTaskProfile.ViewModels.Profiles;
 using TestTaskProfile.CQRS;
-using Microsoft.Extensions.DependencyInjection;
 using TestTaskProfile.Data.Interfaces;
 using TestTaskProfile.Data.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

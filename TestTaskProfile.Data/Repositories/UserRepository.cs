@@ -1,9 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Web.Http;
 using TestTaskProfile.Data.Interfaces;
 using TestTaskProfile.Data.Models;
 
@@ -46,7 +42,7 @@ namespace TestTaskProfile.Data.Repositories
 
             if (dbUser == null)
             {
-                return null;
+                throw new HttpResponseException(System.Net.HttpStatusCode.NotFound);
             }
 
             _databaseContext.Users.Update(user);
@@ -61,7 +57,7 @@ namespace TestTaskProfile.Data.Repositories
 
             if (dbUser == null)
             {
-                return;
+                throw new HttpResponseException(System.Net.HttpStatusCode.NotFound);
             }
 
             _databaseContext.Users.Remove(dbUser);
